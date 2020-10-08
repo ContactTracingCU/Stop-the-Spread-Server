@@ -1,1 +1,1 @@
-# Stop the Spread Admin Github
+# Stop the Spread Admin
