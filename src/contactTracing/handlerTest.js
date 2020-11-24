@@ -5,8 +5,9 @@
 //     console.log(data.toString());
 // })
 
-setInterval(testConsole, 10000);
+// setInterval(testConsole, 10000);
 
-function testConsole(){
-    console.log('worker file is working')
-}
+// function testConsole(){
+//     console.log('worker file is working');
+// }
+console.log('worker file is working');
