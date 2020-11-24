@@ -19,5 +19,11 @@ storage = firebase.storage()
 locations = db.child('locations').get().val()
 users = db.child('users').get()
 
+testOfRegion = 'Denver County'
+
 for key, value in locations.items():
-    print(key)
+    if key == testOfRegion:
+        print('Found a matching region to a positive case: {}'.format(key))
+    else:
+        print('Positive case reported at {}; skipping {} region'.format(testOfRegion, key))
+
