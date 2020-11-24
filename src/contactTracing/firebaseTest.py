@@ -17,13 +17,15 @@ storage = firebase.storage()
 
 # get dictionary of locationss
 locations = db.child('locations').get().val()
-users = db.child('users').get()
+# get dictionary of users
+users = db.child('users').get().val()
 
 testOfRegion = 'Denver County'
 
 for key, value in locations.items():
     if key == testOfRegion:
         print('Found a matching region to a positive case: {}'.format(key))
+        # run coordinate math on all locations in this region
     else:
         print('Positive case reported at {}; skipping {} region'.format(testOfRegion, key))
 
