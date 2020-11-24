@@ -1,0 +1,1 @@
+worker: node src/contactTracing/handlerTest.js
