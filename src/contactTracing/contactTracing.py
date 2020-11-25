@@ -56,5 +56,5 @@ for key, value in testedPositive.items():
     # TODO 
     # delete that user
     # add logic to app to only send negative results
-    print('User: {} has tested negative, don\'t runt tests'.format(key))
+    # print('User: {} has tested negative, don\'t runt tests'.format(key))
 
