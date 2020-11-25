@@ -1,35 +1,60 @@
 import pyrebase
 import time
+import coordinateMath
+
+print('Contact tracing worker file up')
+
+apiKey = "AIzaSyCl2hHT9n6qPGyoqTOXsRqi_3QJcETx2YA"
+authDomain = "sts0-76694.firebaseapp.com"
+databaseURL = "https://sts0-76694.firebaseio.com/"
+storageBucket = "sts0-76694.appspot.com"
 
 config = {
-  "apiKey": "AIzaSyCl2hHT9n6qPGyoqTOXsRqi_3QJcETx2YA",
-  "authDomain": "sts0-76694.firebaseapp.com",
-  "databaseURL": "https://sts0-76694.firebaseio.com/",
-  "storageBucket": "sts0-76694.appspot.com"
+  "apiKey": apiKey,
+  "authDomain": authDomain,
+  "databaseURL": databaseURL,
+  "storageBucket": storageBucket
 }
-# get a reference to the firebase
+
+# get a reference to the firebase, auth service, database service and storage service
 firebase = pyrebase.initialize_app(config)
-# get a reference to the auth service
 auth = firebase.auth()
-# get a reference to the database service
 db = firebase.database()
-# get a reference to the storage service
 storage = firebase.storage()
 
-# get dictionary of locationss
+# get dictionary of locations, users and testedPositive users
 locations = db.child('locations').get().val()
-# get dictionary of users
 users = db.child('users').get().val()
+testedPositive = db.child('testedPositive').get().val()
 
-testOfRegion = 'Denver County'
+print(
+'''
+Initialized necesarry firebase components
+apiKey : {}
+authDomain : {}
+databaseURL : {}
+storageBucket : {}
+'''.format(apiKey, authDomain, databaseURL, storageBucket)
+)
 
-while True:
-  for key, value in locations.items():
-    if key == testOfRegion:
-        print('Found a matching region to a positive case: {}'.format(key))
-        # run coordinate math on all locations in this region
-    else:
-        print('Positive case reported at {}; skipping {} region'.format(testOfRegion, key))
-  time.sleep(10)
-  
+for key, value in testedPositive.items():
+  if value == True:
+    print('User: {} has tested positive, run tests'.format(key))
+    # TODO 
+    # delete user from testedPositive to remove off 'queue'
+    userLocationInfo = users[key]['locationInfo']['locations']
+    userLocations = []
+
+    for key, value in userLocationInfo.items():
+      userLocations.append(key)
+    print('User has been to {} location(s):'.format(len(userLocations)))
+    for i in userLocations:
+      print('\t{}'.format(i))
+    
+
+  else:
+    # TODO 
+    # delete that user
+    # add logic to app to only send negative results
+    print('User: {} has tested negative, don\'t runt tests'.format(key))
 
