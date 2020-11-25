@@ -1,4 +1,5 @@
 import pyrebase
+import time
 
 config = {
   "apiKey": "AIzaSyCl2hHT9n6qPGyoqTOXsRqi_3QJcETx2YA",
@@ -22,10 +23,13 @@ users = db.child('users').get().val()
 
 testOfRegion = 'Denver County'
 
-for key, value in locations.items():
+while True:
+  for key, value in locations.items():
     if key == testOfRegion:
         print('Found a matching region to a positive case: {}'.format(key))
         # run coordinate math on all locations in this region
     else:
         print('Positive case reported at {}; skipping {} region'.format(testOfRegion, key))
+  time.sleep(10)
+  
 
