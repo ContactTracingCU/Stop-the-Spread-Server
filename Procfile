@@ -1,1 +1,1 @@
-worker: node src/contactTracing/handlerTest.js
+worker: node handlerTest.js
