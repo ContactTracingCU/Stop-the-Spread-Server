@@ -4,18 +4,18 @@ const app = express();
 const ipAddress = ip.address();
 const port = 3000;
 
-// const spawn = require('child_process').spawn;
-// const process = spawn('python', ['./firebaseTest.py']);
+const spawn = require('child_process').spawn;
+const process = spawn('python', ['./firebaseTest.py']);
 
-// process.stdout.on('data', data => {
-//     console.log(data.toString());
-// })
-
-app.get('/', (req, res) => res.send('Worker reached.'));
-
-app.listen(port, () => {
-    console.log(`Worker access @ ${ipAddress} : ${port}`);
+process.stdout.on('data', data => {
+    console.log(data.toString());
 })
+
+// app.get('/', (req, res) => res.send('Worker reached.'));
+
+// app.listen(port, () => {
+//     console.log(`Worker access @ ${ipAddress} : ${port}`);
+// })
 
 
 
