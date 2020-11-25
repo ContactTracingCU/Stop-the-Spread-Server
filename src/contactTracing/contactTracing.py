@@ -1,6 +1,10 @@
 import pyrebase
 import time
-import coordinateMath
+# import coordinateMath
+
+# TODO 
+# add while loop to check every x seconds after deletion of queue so
+# we don't calculate on same information twice
 
 print('Contact tracing worker file up')
 
@@ -29,7 +33,7 @@ testedPositive = db.child('testedPositive').get().val()
 
 print(
 '''
-Initialized necesarry firebase components
+Initialized necessary firebase components
 apiKey : {}
 authDomain : {}
 databaseURL : {}
@@ -37,56 +41,53 @@ storageBucket : {}
 '''.format(apiKey, authDomain, databaseURL, storageBucket)
 )
 
+# BEGINING OF CONTACT TRACING ALGORITHM
+  # TODO 
+  # in isPositive == True:
+    # delete user from testedPositive to remove off 'queue'
+
 # key is uid value is true or flase
 for userID, isPositive in testedPositive.items():
   if isPositive == True:
     print('User: {} has tested positive, run tests'.format(userID))
-    # TODO 
-    # delete user from testedPositive to remove off 'queue'
 
     userLocationInfo = users[userID]['locationInfo']['locations']
     userLocations = []
 
+    # get all counties this user has visited
     # key is county, value is timestamp
     for key, value in userLocationInfo.items():
       userLocations.append(key)
     print('User has been to {} location(s):'.format(len(userLocations)))
     for i in userLocations:
       print('\t{}'.format(i))
-    print('\n\n')
+    print('\n')
 
-    # step through all the users visited counties and collect the data for that county from locations
+    # step through all the counties that the positive user visited and
+    # get all the locations from all users in that county
     for county in userLocations:
-      currentCounty = locations[county]   # dictionary of all the tracked locations in current county
+      allLocations = locations[county]  # dictionary of all the tracked locations in current county
+      positiveUserLocations = {}        # dictionary for the positive user locations
+      otherUserLocations = {}           # dictionary for all the other users locations
 
-      allLocations = {}
-      currentUserLocations = {}
-      otherUserLocations = {}
+      positiveContacts = []             # list to keep track of what userID came in contact with the positive user
 
-      positiveContacts = []
-      locationData = []
-
-      for key, value in currentCounty.items():
-        allLocations[key] = value
-        
-      # key = timestamp ; value = dictionary of location info
-      for key, value in allLocations.items():
-        locationData.append(value)
-
-      currentUserLocationNumber = 1
+      currentUserLocationNumber = 1     # variables too keep track of the location number to set as key
       otherUsersLocationNumber = 1
-      for i in locationData:
-        # key = random string ; value = locatino info
-        for key, value in i.items():
-          if value['user'] == userID:
-            currentUserLocations['Location_{}'.format(currentUserLocationNumber)] = value
+
+      for timestamp, locationInfoWithRandomString in allLocations.items():
+        for randomString, locationInfo in locationInfoWithRandomString.items():
+          if locationInfo['user'] == userID:
+            positiveUserLocations['Location_{}'.format(currentUserLocationNumber)] = locationInfo
             currentUserLocationNumber += 1
           else:
-            otherUserLocations['Location_{}'.format(otherUsersLocationNumber)] = value
+            otherUserLocations['Location_{}'.format(otherUsersLocationNumber)] = locationInfo
             otherUsersLocationNumber += 1
-
+      
+      # print used for testing to see all locations in both dictionaries
+      # will be deleted
       print('positive user locations')
-      for key, value in currentUserLocations.items():
+      for key, value in positiveUserLocations.items():
         print(key, value)
       print('\n')
       print('other users locations')
