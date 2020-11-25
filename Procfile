@@ -1,1 +1,1 @@
-worker: python firebaseTest.py
+worker: python src/contactTracing/contactTracing.py
