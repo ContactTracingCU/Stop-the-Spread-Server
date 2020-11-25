@@ -1,1 +1,1 @@
-worker: node handlerTest.js
+worker: python firebaseTest.py
