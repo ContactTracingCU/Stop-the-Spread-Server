@@ -9,6 +9,7 @@ const process = spawn('python', ['./firebaseTest.py']);
 
 process.stdout.on('data', data => {
     console.log(data.toString());
+    console.log('worker file runs firebaseTest.py');
 })
 
 // app.get('/', (req, res) => res.send('Worker reached.'));
@@ -24,5 +25,5 @@ process.stdout.on('data', data => {
 // function testConsole(){
 //     console.log('worker file is working');
 // }
-console.log('worker file is working');
+// console.log('worker file is working');
 
