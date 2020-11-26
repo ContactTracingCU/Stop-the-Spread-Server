@@ -1,7 +1,7 @@
 import pyrebase
 import time
 import authProvider
-# import coordinateMath
+import coordinateMath
 
 # TODO 
 # add while loop to check every x seconds after deletion of queue so we don't calculate on same information twice
@@ -33,12 +33,13 @@ while True:
           print('\t{}'.format(i))
         print('\n')
 
+        positiveUserLocations = {}        # dictionary for the positive user locations
+        otherUserLocations = {}           # dictionary for all the other users locations
+
         # step through all the counties that the positive user visited and
         # get all the locations from all users in that county
         for county in userLocations:
           allLocations = locations[county]  # dictionary of all the tracked locations in current county
-          positiveUserLocations = {}        # dictionary for the positive user locations
-          otherUserLocations = {}           # dictionary for all the other users locations
 
           positiveContacts = []             # list to keep track of what userID came in contact with the positive user
 
@@ -53,9 +54,27 @@ while True:
               else:
                 otherUserLocations['Location_{}'.format(otherUsersLocationNumber)] = locationInfo
                 otherUsersLocationNumber += 1
-          
-          for i in positiveUserLocations:
-            print(i)
+        lats = []
+        longs = []
+        for i, positiveCoordinates in positiveUserLocations.items():
+          lats.append(positiveCoordinates['lat'])
+          longs.append(positiveCoordinates['long'])
+          for j, otherCoordinates in otherUserLocations.items():
+            lats.append(otherCoordinates['lat'])
+            longs.append(otherCoordinates['long'])
+
+            distanceBetweenCoordinates = coordinateMath.coordinateMath(lats, longs)
+            if distanceBetweenCoordinates <= 6:
+              print('Positive contact for userID: {}'.format(userID))
+              db.child('positiveContact').push({userID:'positiveContact'})
+            else:
+              print('Distance was greater than 6 feet')
+            lats[1] = None
+            longs[1] = None
+          lats = []
+          longs = []
+
+        db.child("testedPositive").child(userID).remove()
 
       else:
         # TODO 

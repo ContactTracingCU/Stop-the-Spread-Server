@@ -2,7 +2,7 @@ import math
 from matplotlib import pyplot as plt
 from scipy.stats import pearsonr
 
-def coordinateMath():
+def coordinateMath(lats, longs):
     convert = 20000 / 180
     kmToFeet = 3280.84
 
@@ -27,5 +27,3 @@ def coordinateMath():
     print('Distance in a straight line from location 1 to location 2 is: {} feet'.format(distInFeet))
 
     return distInFeet
-
-coordinateMath()
