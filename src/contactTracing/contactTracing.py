@@ -65,8 +65,8 @@ while True:
 
             distanceBetweenCoordinates = coordinateMath.coordinateMath(lats, longs)
             if distanceBetweenCoordinates <= 6:
-              print('Positive contact for userID: {}'.format(userID))
-              db.child('positiveContact').push({userID:'positiveContact'})
+              print('Positive contact for userID: {}'.format(otherCoordinates['user']))
+              db.child('positiveContact').push({otherCoordinates['user']:'positiveContact'})
             else:
               # print('Distance was greater than 6 feet')
               pass
