@@ -54,19 +54,8 @@ while True:
                 otherUserLocations['Location_{}'.format(otherUsersLocationNumber)] = locationInfo
                 otherUsersLocationNumber += 1
           
-          # print used for testing to see all locations in both dictionaries
-          # will be deleted
-          print('positive user locations')
-          for key, value in positiveUserLocations.items():
-            print(key, value)
-          print('\n')
-          print('other users locations')
-          for key, value in otherUserLocations.items():
-            print(key, value)
-          print('****************\nend of {}\n****************'.format(county))
-        # TODO insert deletion here
-        db.child("testedPositive").child(userID).remove()
-        print('****************\nend of {}\n****************'.format(userID))
+          for i in positiveUserLocations:
+            print(i)
 
       else:
         # TODO 
