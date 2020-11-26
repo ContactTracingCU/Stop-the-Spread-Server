@@ -24,6 +24,6 @@ def coordinateMath(lats, longs):
     dist = math.sqrt((location2_lat - location1_lat)**2 + (location2_long-location1_long)**2)
     distInFeet = dist * kmToFeet
 
-    print('Distance in a straight line from location 1 to location 2 is: {} feet'.format(distInFeet))
+    # print('Distance in a straight line from location 1 to location 2 is: {} feet'.format(distInFeet))
 
     return distInFeet
