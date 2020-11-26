@@ -68,7 +68,8 @@ while True:
               print('Positive contact for userID: {}'.format(userID))
               db.child('positiveContact').push({userID:'positiveContact'})
             else:
-              print('Distance was greater than 6 feet')
+              # print('Distance was greater than 6 feet')
+              pass
             lats[1] = None
             longs[1] = None
           lats = []
