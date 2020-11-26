@@ -31,7 +31,6 @@ while True:
         print('User has been to {} location(s):'.format(len(userLocations)))
         for i in userLocations:
           print('\t{}'.format(i))
-        print('\n')
 
         positiveUserLocations = {}        # dictionary for the positive user locations
         otherUserLocations = {}           # dictionary for all the other users locations
