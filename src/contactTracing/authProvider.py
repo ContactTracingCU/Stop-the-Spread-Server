@@ -34,4 +34,4 @@ def setUpFirebase():
     '''.format(apiKey, authDomain, databaseURL, storageBucket)  
     )
 
-    return locations, users, testedPositive
+    return locations, users, testedPositive, db
