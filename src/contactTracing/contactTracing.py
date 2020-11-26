@@ -84,5 +84,6 @@ while True:
         # print('User: {} has tested negative, don\'t runt tests'.format(key))
         pass
   else:
-    print('no users to run contact tracing')
+    # print('no users to run contact tracing')
+    pass
   time.sleep(10)
