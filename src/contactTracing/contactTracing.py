@@ -1,88 +1,66 @@
-import pyrebase
-import time
-import authProvider
-import coordinateMath
-
-# TODO 
-# add while loop to check every x seconds after deletion of queue so we don't calculate on same information twice
+# contactTracing.py will determine if there was positive contact between two users
+# program will determined this by implementing different algorithms 
+# these algorithms include:
+# difference in feet between coordinates 
+# difference in minutes between unix timestamps
+# import time
+import authProvider as ap
+import timestampMath as tsm
+import coordinateMath as cm
 
 print('Contact tracing worker file running...')
-locations, users, testedPositive, db = authProvider.setUpFirebase()
+locations, users, testedPositive, db = ap.setUpFirebase()
 
 # BEGINING OF CONTACT TRACING ALGORITHM
-  # TODO 
-  # in isPositive == True:
-    # delete user from testedPositive to remove off 'queue'
 while True:
-  testedPositive = db.child('testedPositive').get().val()
-  if testedPositive != None:
-    # key is uid value is true or flase
-    for userID, isPositive in testedPositive.items():
-      if isPositive == True:
-        print('User: {} has tested positive, run tests'.format(userID))
+  try:
+    testedPositive = db.child('testedPositive').get().val()
+    if testedPositive != None:
+      # key is uid value is true or flase
+      for userID, isPositive in testedPositive.items():
+        if isPositive == True:
+          userLocationInfo = users[userID]['locationInfo']['locations']
+          userLocations = []
 
-        userLocationInfo = users[userID]['locationInfo']['locations']
-        userLocations = []
+          # get all counties this user has visited
+          # key is county, value is timestamp
+          for key, value in userLocationInfo.items():
+            userLocations.append(key)
 
-        # get all counties this user has visited
-        # key is county, value is timestamp
-        for key, value in userLocationInfo.items():
-          userLocations.append(key)
-        print('User has been to {} location(s):'.format(len(userLocations)))
-        for i in userLocations:
-          print('\t{}'.format(i))
+          # step through all the counties that the positive user visited and
+          # get all the locations from all users in that county
+          for county in userLocations:
+            positiveUserLocations = {}        # dictionary for the positive user locations
+            otherUserLocations = {}           # dictionary for all the other users locations
+            allLocations = locations[county]  # dictionary of all the tracked locations in current county
 
-        positiveUserLocations = {}        # dictionary for the positive user locations
-        otherUserLocations = {}           # dictionary for all the other users locations
+            positiveContacts = []             # list to keep track of what userID came in contact with the positive user
 
-        # step through all the counties that the positive user visited and
-        # get all the locations from all users in that county
-        for county in userLocations:
-          allLocations = locations[county]  # dictionary of all the tracked locations in current county
+            for timestamp, locationInfoWithRandomString in allLocations.items():
+              for randomString, locationInfo in locationInfoWithRandomString.items():
+                if locationInfo['user'] == userID:
+                  positiveUserLocations[timestamp] = locationInfo
+                else:
+                  otherUserLocations[timestamp] = locationInfo
 
-          positiveContacts = []             # list to keep track of what userID came in contact with the positive user
+            lats = [None, None]
+            longs = [None, None]
+            for i, positiveCoordinates in positiveUserLocations.items():
+              lats[0] = positiveCoordinates['lat']
+              longs[0] = positiveCoordinates['long']
+              for j, otherCoordinates in otherUserLocations.items():
+                lats[1] = otherCoordinates['lat']
+                longs[1] = otherCoordinates['long']
+                distanceBetweenCoordinates = cm.coordinateMath(lats, longs)
+                if distanceBetweenCoordinates <= 6:
+                  if(tsm.timestampMath(int(i), int(j))):
+                    print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
+                    db.child('positiveContact').child(otherCoordinates['user']).child(j).set({'lat': lats[1], 'long': longs[1]})
 
-          currentUserLocationNumber = 1     # variables too keep track of the location number to set as key
-          otherUsersLocationNumber = 1
-
-          for timestamp, locationInfoWithRandomString in allLocations.items():
-            for randomString, locationInfo in locationInfoWithRandomString.items():
-              if locationInfo['user'] == userID:
-                positiveUserLocations['Location_{}'.format(currentUserLocationNumber)] = locationInfo
-                currentUserLocationNumber += 1
-              else:
-                otherUserLocations['Location_{}'.format(otherUsersLocationNumber)] = locationInfo
-                otherUsersLocationNumber += 1
-        lats = []
-        longs = []
-        for i, positiveCoordinates in positiveUserLocations.items():
-          lats.append(positiveCoordinates['lat'])
-          longs.append(positiveCoordinates['long'])
-          for j, otherCoordinates in otherUserLocations.items():
-            lats.append(otherCoordinates['lat'])
-            longs.append(otherCoordinates['long'])
-
-            distanceBetweenCoordinates = coordinateMath.coordinateMath(lats, longs)
-            if distanceBetweenCoordinates <= 6:
-              print('Positive contact for userID: {}'.format(otherCoordinates['user']))
-              db.child('positiveContact').push({'user':otherCoordinates['user'], 'lat': lats[1], 'long': longs[1]})
-            else:
-              # print('Distance was greater than 6 feet')
-              pass
-            lats[1] = None
-            longs[1] = None
-          lats = []
-          longs = []
-
-        db.child("testedPositive").child(userID).remove()
-
-      else:
-        # TODO 
-        # delete that user
-        # add logic to app to only send negative results
-        # print('User: {} has tested negative, don\'t runt tests'.format(key))
-        pass
-  else:
-    # print('no users to run contact tracing')
-    pass
-  time.sleep(10)
+            db.child("testedPositive").child(userID).remove()
+        else:
+          db.child("testedPositive").child(userID).remove()
+    # time.sleep(10)
+  except:
+    print('\nProgram has been shut down...')
+    exit()
