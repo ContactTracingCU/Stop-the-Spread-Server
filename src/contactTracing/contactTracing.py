@@ -3,8 +3,7 @@
 # these algorithms include:
 # difference in feet between coordinates 
 # difference in minutes between unix timestamps
-
-import time
+# import time
 import authProvider as ap
 import timestampMath as tsm
 import coordinateMath as cm
@@ -54,9 +53,9 @@ if testedPositive != None:
             if distanceBetweenCoordinates <= 6:
               if(tsm.timestampMath(int(i), int(j))):
                 print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
-                db.child('positiveContact').child(otherCoordinates['user']).update(j).set({'lat': lats[1], 'long': longs[1]})
+                db.child('positiveContact').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
 
         db.child("testedPositive").child(userID).remove()
     else:
       db.child("testedPositive").child(userID).remove()
-time.sleep(5)
+# time.sleep(10)
