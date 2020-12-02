@@ -53,7 +53,7 @@ if testedPositive != None:
             if distanceBetweenCoordinates <= 6:
               if(tsm.timestampMath(int(i), int(j))):
                 print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
-                db.child('positiveContact').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
+                db.child('positiveContact').child(otherCoordinates['user']).child(j).set({'lat': lats[1], 'long': longs[1]})
 
         db.child("testedPositive").child(userID).remove()
     else:
