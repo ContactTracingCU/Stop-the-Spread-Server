@@ -1,2 +1,2 @@
-  lats[1] = None
-                longs[1] = None
+  except:
+    print('\nSome error occured...')
