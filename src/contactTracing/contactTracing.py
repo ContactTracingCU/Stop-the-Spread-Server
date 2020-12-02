@@ -3,7 +3,8 @@
 # these algorithms include:
 # difference in feet between coordinates 
 # difference in minutes between unix timestamps
-# import time
+
+import time
 import authProvider as ap
 import timestampMath as tsm
 import coordinateMath as cm
@@ -60,7 +61,7 @@ while True:
             db.child("testedPositive").child(userID).remove()
         else:
           db.child("testedPositive").child(userID).remove()
-    # time.sleep(10)
+    time.sleep(5)
   except:
     print('\nProgram has been shut down...')
     exit()
