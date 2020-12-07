@@ -24,14 +24,14 @@ def setUpFirebase():
     users = db.child('users').get().val()
     testedPositive = db.child('testedPositive').get().val()
 
-    print(
-    '''
-    Initialized necessary firebase components
-    apiKey : {}
-    authDomain : {}
-    databaseURL : {}
-    storageBucket : {}
-    '''.format(apiKey, authDomain, databaseURL, storageBucket)  
-    )
+    # print(
+    # '''
+    # Initialized necessary firebase components
+    # apiKey : {}
+    # authDomain : {}
+    # databaseURL : {}
+    # storageBucket : {}
+    # '''.format(apiKey, authDomain, databaseURL, storageBucket)  
+    # )
 
     return locations, users, testedPositive, db
