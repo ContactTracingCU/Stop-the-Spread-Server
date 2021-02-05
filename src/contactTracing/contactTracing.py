@@ -13,7 +13,7 @@ locations, users, testedPositive, db = ap.setUpFirebase()
 
 # BEGINING OF CONTACT TRACING ALGORITHM
 while True:
-  testedPositive = db.child('testedPositive').get().val()
+  testedPositive = db.reference('testedPositive').get()
   if testedPositive != None:
     # key is uid value is true or flase
     for userID, isPositive in testedPositive.items():
@@ -56,10 +56,10 @@ while True:
               if distanceBetweenCoordinates <= 6:
                 if(tsm.timestampMath(int(i), int(j))):
                   print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
-                  db.child('positiveContacts').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
-                  db.child('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update({'lat': lats[1], 'long': longs[1]})
+                  db.reference('positiveContacts').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
+                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update({'lat': lats[1], 'long': longs[1]})
 
-          db.child("testedPositive").child(userID).remove()
+          db.reference("testedPositive").child(userID).delete()
       else:
-        db.child("testedPositive").child(userID).remove()
+        db.child("testedPositive").child(userID).delete()
   # time.sleep(10)
