@@ -18,7 +18,12 @@ while True:
     # key is uid value is true or flase
     for userID, isPositive in testedPositive.items():
       if isPositive == True:
-        userLocationInfo = users[userID]['locationInfo']['locations']
+        try:
+          userLocationInfo = users[userID]['locationInfo']['locations']
+        except KeyError:
+          print("The user", userID, " does not have any location history.")
+          db.reference("testedPositive").update({userID : "false"})
+          continue
         userLocations = []
 
         # get all counties this user has visited
@@ -61,5 +66,5 @@ while True:
 
           db.reference("testedPositive").child(userID).delete()
       else:
-        db.child("testedPositive").child(userID).delete()
+        db.reference("testedPositive").child(userID).delete()
   # time.sleep(10)
