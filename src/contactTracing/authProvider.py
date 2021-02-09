@@ -4,7 +4,7 @@ from firebase_admin import db
 
 def setUpFirebase():
 
-    cred = firebase_admin.credentials.Certificate("./keys/sts0-76694-firebase-adminsdk-b669p-bfc15bac9b.json")
+    cred = firebase_admin.credentials.Certificate("sts0-76694-firebase-adminsdk-b669p-bfc15bac9b.json")
     apiKey = "AIzaSyCl2hHT9n6qPGyoqTOXsRqi_3QJcETx2YA"
     authDomain = "sts0-76694.firebaseapp.com"
     databaseURL = "https://sts0-76694.firebaseio.com/"
