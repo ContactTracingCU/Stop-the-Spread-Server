@@ -1,1 +1,1 @@
-worker: python src/contactTracing/contactTracing.py
+worker: python contactTracing/contactTracing.py
