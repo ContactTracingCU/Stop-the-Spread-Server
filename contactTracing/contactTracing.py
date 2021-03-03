@@ -36,7 +36,7 @@ while True:
         for county in userLocations:
           positiveUserLocations = {}        # dictionary for the positive user locations
           otherUserLocations = {}           # dictionary for all the other users locations
-          allLocations = locations[str(county)]  # dictionary of all the tracked locations in current county
+          allLocations = locations[county]  # dictionary of all the tracked locations in current county
 
           positiveContacts = []             # list to keep track of what userID came in contact with the positive user
           # locationInfo = {}
@@ -62,7 +62,7 @@ while True:
                 if(tsm.timestampMath(int(i), int(j))):
                   print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
                   db.reference('positiveContacts').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
-                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update({'lat': lats[1], 'long': longs[1]})
+                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update(timestamp)
 
           db.reference("testedPositive").child(userID).delete()
       else:
