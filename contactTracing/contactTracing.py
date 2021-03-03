@@ -62,7 +62,7 @@ while True:
                 if(tsm.timestampMath(int(i), int(j))):
                   print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
                   db.reference('positiveContacts').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
-                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).push({'location':timestamp})
+                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').push({'location':timestamp})
 
           db.reference("testedPositive").child(userID).delete()
       else:
