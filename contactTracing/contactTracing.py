@@ -19,7 +19,7 @@ while True:
     for userID, isPositive in testedPositive.items():
       if isPositive == True:
         try:
-          userLocationInfo = users[userID]['locationInfo']['locations']
+          userLocationInfo = users[userID]['locationInfo']
         except KeyError:
           print("The user", userID, " does not have any location history.")
           db.reference("testedPositive").update({userID : "false"})
