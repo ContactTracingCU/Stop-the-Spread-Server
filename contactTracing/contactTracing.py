@@ -18,12 +18,6 @@ while True:
     # key is uid value is true or flase
     for userID, isPositive in testedPositive.items():
       if isPositive == True:
-        try:
-          userLocationInfo = users[userID]['locationInfo']['locations']
-        except KeyError:
-          print("The user", userID, " does not have any location history.")
-          db.reference("testedPositive").update({userID : "false"})
-          continue
         userLocations = []
 
         # get all counties this user has visited
@@ -62,7 +56,7 @@ while True:
                 if(tsm.timestampMath(int(i), int(j))):
                   print('Positive contact for userID: {} with positive userID: {} @ {}'.format(otherCoordinates['user'], positiveCoordinates['user'], county))
                   db.reference('positiveContacts').child(otherCoordinates['user']).child(j).update({'lat': lats[1], 'long': longs[1]})
-                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update({'lat': lats[1], 'long': longs[1]})
+                  db.reference('users').child(otherCoordinates['user']).child('positiveContacts').child(j).update(timestamp)
 
           db.reference("testedPositive").child(userID).delete()
       else:
