@@ -36,7 +36,7 @@ while True:
         for county in userLocations:
           positiveUserLocations = {}        # dictionary for the positive user locations
           otherUserLocations = {}           # dictionary for all the other users locations
-          allLocations = locations[county]  # dictionary of all the tracked locations in current county
+          allLocations = locations[str(county)]  # dictionary of all the tracked locations in current county
 
           positiveContacts = []             # list to keep track of what userID came in contact with the positive user
           # locationInfo = {}
