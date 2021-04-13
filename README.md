@@ -1,4 +1,4 @@
-# Stop the Spread Admin
+# Stop the Spread Server
 Web app: https://stop-the-spread-admin.herokuapp.com
 
 This is the web app for the stop the spread app. 
